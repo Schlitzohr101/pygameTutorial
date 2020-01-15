@@ -17,16 +17,20 @@ gameDisplay = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption('A bit Racey')
 clock = pygame.time.Clock()
 
-carImg = pygame.image.load('bettercar.png')
+carImg = pygame.image.load('rocketship.gif')
+starImg = pygame.image.load('Star.png')
 
 def things(thingx, thingy, thingw, thingh, color):
     pygame.draw.rect(gameDisplay, color, [thingx, thingy, thingw, thingh])
+    
+def star(x,y):
+    gameDisplay.blit(starImg, (x,y))
 
 def car(x,y):
     gameDisplay.blit(carImg, (x,y))
 
 def text_objects(text, font):
-    textSurface = font.render(text, True, black)
+    textSurface = font.render(text, True, white)
     return textSurface, textSurface.get_rect()
 
 def message_display(text):
@@ -50,15 +54,15 @@ def game_loop():
     y = (display_height * 0.8)
     x_change = 0
 
-    thing_startx = random.randrange(0, display_width)
-    thing_starty = -600
-    thing_speed = 7
-    thing_width = 100
-    thing_height = 100
+    star_x = random.randrange(0, display_width)
+    star_y = 0
+    star_height = 50
+    star_width = 50
+    star_speed = 7
 
     gameExit = False
 
-    car_speed = 0
+    rocket_width = 30
 
     while not gameExit:
 
@@ -76,24 +80,26 @@ def game_loop():
                     x_change = 0
         
         x+=x_change
-        gameDisplay.fill(white)
-        things(thing_startx, thing_starty, thing_width, thing_height, black)
-        thing_starty += thing_speed
+        gameDisplay.fill(black)
+        #things(thing_startx, thing_starty, thing_width, thing_height, black)
+        #thing_starty += thing_speed
+        star(star_x,star_y)
+        star_y += star_speed
         car(x,y)
 
         if x > display_width - car_width or x < 0:
             crash()
 
-        if thing_starty > display_height:
-            thing_starty = 0 - thing_height
-            thing_startx = random.randrange(0,display_width)
+        if star_y > display_height:
+            star_y = 0
+            star_x = random.randrange(0,display_width)
+            
+        if y < star_y + star_height:
+          print('y crossover')
+          if x > star_x and x < star_x + star_width or x + rocket_width > star_x and x + star_width < star_x+star_width:
+            print('x crossover')
+            crash()
 
-        if y < thing_starty+thing_height:
-            print('y crossover')
-            if x > thing_startx and x < thing_startx + thing_width or x+car_width > thing_startx and x + car_width < thing_startx+thing_width:
-                print('x crossover')
-                crash()
-        
         pygame.display.update()
         clock.tick(60)
 
