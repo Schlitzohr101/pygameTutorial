@@ -115,9 +115,9 @@ def game_loop():
         
         #this check is to see if our hero and the obstacle are touching
         if y < obstacle_y + obstacle_height:
-          print('y crossover')
+          #print('y crossover')
           if x > obstacle_x and x < obstacle_x + obstacle_width or x + hero_width > obstacle_x and x + hero_width < obstacle_x+obstacle_width:
-            print('x crossover')
+            #print('x crossover')
             crash()
         #here we update our game window
         pygame.display.update()
